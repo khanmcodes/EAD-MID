@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./CountdownLightSwitch.css";
 
 function CountdownLightSwitch() {
+
+    const [mode, setMode] = useState('light');
+
+    const toggleMode = () => {
+        if (mode=='dark')
+            setMode('light')
+        else
+            setMode('dark')
+
+            console.log(mode);
+    }
+
+    const lightTheme = () => {
+        
+    }
+
   return (
     <>
         <div className="container">
@@ -9,7 +25,7 @@ function CountdownLightSwitch() {
         <h1>Countdown & Light Switch</h1>
         <div className="toggle-container">
           <label className="toggle-switch">
-            <input type="checkbox" id="themeToggle" />
+            <input type="checkbox" id="themeToggle" onChange={toggleMode}/>
             <span className="slider"></span>
           </label>
           <span>Light Mode</span>
