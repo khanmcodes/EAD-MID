@@ -1,24 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {
+  HashRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
+import Home from "./pages/Home";
+import Page2 from "./pages/Page2";
+import Page3 from "./pages/Page3";
+import Navbar from "./components/Navbar";
+// import Footer from "./components/Footer";
+import { useLayoutEffect } from "react";
+import { useLocation } from "react-router-dom";
+import "./index.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+function ScrollToTop() {
+  const location = useLocation();
 
-  return (
-    <>
-    <div className="bg-green-900 flex justify-self-center justify-center w-100 border-2 border-green-400 rounded-md my-4 p-2">
-    <h1 className='text-center text-white font-mono font-extrabold'>Hello World</h1>
-    </div>
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
-    <div className="flex justify-center space-x-5 mx-5">
-      <div className="h-16 w-16 rounded-full bg-amber-400"></div>
-      <div className="h-16 w-16 rounded-full bg-amber-600"></div>
-      <div className="h-16 w-16 rounded-full bg-amber-800"></div>
-    </div>
-    </>
-  )
+  return null;
 }
 
-export default App
+
+function App() {
+  return (
+    <Router>
+    <ScrollToTop/>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Page2" element={<Page2 />} />
+        <Route path="/Page3" element={<Page3 />} />
+      </Routes>
+      {/* <Footer/> */}
+    </Router>
+  );
+}
+
+export default App;
