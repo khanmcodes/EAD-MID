@@ -6,7 +6,7 @@
     --btn-bg: #4caf50;
     --btn-hover: #45a049;
   }
-  
+
   body.light {
     --bg-color: #f8f8f8;
     --text-color: #333;
@@ -128,6 +128,8 @@
   }
   .btn-group {
     margin-top: 1rem;
+    display: flex;
+    justify-content: center;
   }
   button {
     padding: 0.7rem 1.5rem;
