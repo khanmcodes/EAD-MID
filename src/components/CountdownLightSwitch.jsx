@@ -3,75 +3,80 @@ import "./CountdownLightSwitch.css";
 
 function CountdownLightSwitch() {
   const [mode, setMode] = useState("light");
-  const [timer, setTimer] = useState("false");
+  const [timer, setTimer] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
 
-  const startTimer = () => {
+  useEffect(() => {
     if (timer) {
-      const timeOut = setTimeout(() => {
-        console.log("30s passed");
+      let timeElapsed = 0;
+      setProgress(0); 
+      const interval = setInterval(() => {
+        timeElapsed += 1;
+        setProgress((prev) => prev + (100 / 30)); 
 
-        setTimer("false");
-        toggleMode();
-      }, 3000); //keeping 3000 for testing
+        if (timeElapsed >= 30) {
+          clearInterval(interval);
+          console.log("30s passed");
+          setTimer(false);
+          setIsRunning(false);
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
     }
-  };
+  }, [timer]);
 
   const toggleMode = () => {
-    if (mode == "dark") setMode("light");
-    else setMode("dark");
-
-    console.log(mode);
+    setMode((prevMode) => (prevMode === "dark" ? "light" : "dark"));
+    console.log(`Mode changed to: ${mode}`);
   };
 
   const onStart = () => {
-    document.getElementById("resetButton").style.display = "block";
-    setTimer("true");
-    startTimer();
+    setTimer(true);
+    setIsRunning(true);
   };
 
   const onReset = () => {
-    setTimer("true");
-    startTimer();
+    setTimer(false);
+    setProgress(0);
+    setIsRunning(false);
   };
 
   return (
-    <>
-      <div className="container">
-        <div className="header">
-          <h1>Countdown & Light Switch</h1>
-          <div className="toggle-container">
-            <label className="toggle-switch">
-              <input type="checkbox" id="themeToggle" onChange={toggleMode} />
-              <span className="slider"></span>
-            </label>
-            <span>Light Mode</span>
-          </div>
-        </div>
-
-        <div className="timer-section">
-          <div className="progress-bar">
-            <div className="progress" id="progress"></div>
-          </div>
-          <div className="timer" id="timerDisplay">
-            30s
-          </div>
-          <div className="btn-group">
-            <button id="startButton" onClick={onStart}>
-              Start Timer
-            </button>
-            <button
-              id="resetButton"
-              onClick={onReset}
-              style={{ display: "none" }}
-            >
-              Reset Timer
-            </button>
-          </div>
-          <div className="message" id="messageArea"></div>
+    <div className={`container ${mode}`}>
+      <div className="header">
+        <h1>Countdown & Light Switch</h1>
+        <div className="toggle-container">
+          <label className="toggle-switch">
+            <input type="checkbox" onChange={toggleMode} />
+            <span className="slider"></span>
+          </label>
+          <span>{mode === "light" ? "Light Mode" : "Dark Mode"}</span>
         </div>
       </div>
-    </>
+
+      <div className="timer-section">
+        <div className="progress-bar">
+          <div
+            className="progress"
+            style={{
+              width: `${progress}%`,
+              transition: "width 1s linear",
+            }}
+          ></div>
+        </div>
+        <div className="timer">{Math.floor(progress / (100 / 30))}s</div>
+        <div className="btn-group">
+          <button onClick={onStart} disabled={isRunning}>
+            Start Timer
+          </button>
+          <button onClick={onReset} disabled={!isRunning}>
+            Reset Timer
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
