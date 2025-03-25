@@ -10,14 +10,15 @@ function CountdownLightSwitch() {
   useEffect(() => {
     if (timer) {
       let timeElapsed = 0;
-      setProgress(0); 
+      setProgress(0);
       const interval = setInterval(() => {
         timeElapsed += 1;
-        setProgress((prev) => prev + (100 / 30)); 
+        setProgress((prev) => prev + 100 / 30);
 
         if (timeElapsed >= 30) {
           clearInterval(interval);
           console.log("30s passed");
+          alert("Times Up!");
           setTimer(false);
           setIsRunning(false);
         }
